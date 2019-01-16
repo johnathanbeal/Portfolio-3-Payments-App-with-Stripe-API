@@ -10,17 +10,16 @@ using StripeWebAPICore.Models;
 
 namespace StripeWebAPICore.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class BalanceController : ControllerBase
     {
-        [HttpGet("/balance")]
+        [Route("api/balance")]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        [HttpGet("/balance/{id}")]
+        [Route("api/balance/{id}")]
         public BalanceModel Get(int id)
         {
             var service = new BalanceService();
