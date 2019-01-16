@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Stripe;
+using StripeWebAPICore.Settings;
 
 namespace StripeWebAPICore
 {
@@ -34,12 +35,15 @@ namespace StripeWebAPICore
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
+            var secretKey = Configuration.GetSection("Stripe")["SecretKey"];
+            var publishableKey = Configuration.GetSection("Stripe")["PublishableKey"];
 
             if (env.IsDevelopment())
             {
@@ -54,6 +58,8 @@ namespace StripeWebAPICore
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            StripeConfiguration.SetApiKey(secretKey);
 
             app.UseMvc(routes =>
             {
