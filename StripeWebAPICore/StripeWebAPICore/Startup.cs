@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Stripe;
+using StripeWebAPICore.Inventory;
 using StripeWebAPICore.Settings;
 
 namespace StripeWebAPICore
@@ -67,6 +68,9 @@ namespace StripeWebAPICore
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            Stock stock = new Stock();
+            var list = stock.ShirtsForSale;
         }
     }
 }
