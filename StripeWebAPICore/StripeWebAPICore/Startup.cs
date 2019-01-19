@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Stripe;
 using StripeWebAPICore.Inventory;
+using StripeWebAPICore.Services;
 using StripeWebAPICore.Settings;
 
 namespace StripeWebAPICore
@@ -37,7 +38,7 @@ namespace StripeWebAPICore
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
-
+            services.AddScoped<IChargeCreationService, ChargeCreationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

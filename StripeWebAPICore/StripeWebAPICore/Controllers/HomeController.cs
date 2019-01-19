@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using StripeWebAPICore.Models;
+using StripeWebAPICore.Services;
 
 namespace StripeWebAPICore.Controllers
 {
     public class HomeController : Controller
     {
+        private IChargeCreationService _chargeCreationService;
+
+        public HomeController(IChargeCreationService chargeCreationService)
+        {
+            _chargeCreationService = chargeCreationService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -48,22 +56,7 @@ namespace StripeWebAPICore.Controllers
 
         public IActionResult Charge(string stripeEmail, string stripeToken)
         {
-            var customers = new CustomerService();
-            var charges = new ChargeService();
-
-            var customer = customers.Create(new CustomerCreateOptions
-            {
-                Email = stripeEmail,
-                SourceToken = stripeToken
-            });
-
-            var charge = charges.Create(new ChargeCreateOptions
-            {
-                Amount = 2000,
-                Description = "TShirts from Monogram Mama",
-                Currency = "usd",
-                CustomerId = customer.Id
-            });
+            _chargeCreationService.CreateCharge(stripeEmail, stripeToken);
 
             return View();
         }
